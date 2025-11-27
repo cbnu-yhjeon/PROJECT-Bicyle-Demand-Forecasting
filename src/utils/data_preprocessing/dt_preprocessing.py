@@ -5,10 +5,23 @@ def add_time_features(input_csv, output_csv, datetime_col="datatime"):
     input_csv = Path(input_csv)
     output_csv = Path(output_csv)
 
+    # 파일 존재 여부 확인
+    if not input_csv.exists():
+        print(f"❌ 파일을 찾을 수 없습니다: {input_csv}")
+        exit(1)
+
     # 1) CSV 읽기
-    df = pd.read_csv(input_csv)
+    df = pd.read_csv(input_csv, encoding='utf-8-sig')
+    print(f"✅ 파일 읽기 완료: {input_csv}")
+    print(f"📊 데이터 shape: {df.shape}")
+    print(f"📋 컬럼명: {df.columns.tolist()}")
 
     # 2) datatime 컬럼 → datetime 타입으로 변환
+    if datetime_col not in df.columns:
+        print(f"❌ '{datetime_col}' 컬럼이 존재하지 않습니다.")
+        print(f"   사용 가능한 컬럼: {df.columns.tolist()}")
+        exit(1)
+    
     df[datetime_col] = pd.to_datetime(df[datetime_col], errors="coerce")
 
     # 3) 날짜/시간 구성요소 추가
@@ -33,7 +46,7 @@ def add_time_features(input_csv, output_csv, datetime_col="datatime"):
 
 if __name__ == "__main__":
     add_time_features(
-        input_csv=r"/mnt/c/projects/PROJECT-Bicyle-Demand-Forecasting/Data/processed/seoul/Contextual Data/weather/merged.csv",
-        output_csv=r"/mnt/c/projects/PROJECT-Bicyle-Demand-Forecasting/Data/processed/seoul/Contextual Data/weather/merged_with_time_features.csv",
+        input_csv="/home/avg/PROJECT-Bicyle-Demand-Forecasting/Data/processed/seoul/Contextual Data/weather/merged_rename.csv",
+        output_csv="/home/avg/PROJECT-Bicyle-Demand-Forecasting/Data/processed/seoul/Contextual Data/weather/merged_with_time_features.csv",
         datetime_col="dt"
     )

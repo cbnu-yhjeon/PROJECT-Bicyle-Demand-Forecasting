@@ -46,6 +46,6 @@ def merge_csv_files(input_dir, output_path):
 
 if __name__ == "__main__":
     merge_csv_files(
-        input_dir=r"/mnt/c/projects/PROJECT-Bicyle-Demand-Forecasting/Data/raw/seoul/Contextual Data/weather",
-        output_path=r"/mnt/c/projects/PROJECT-Bicyle-Demand-Forecasting/Data/processed/seoul/Contextual Data/weather"
+        input_dir=r"/home/avg/PROJECT-Bicyle-Demand-Forecasting/Data/raw/seoul/Contextual Data/weather",
+        output_path=r"/home/avg/PROJECT-Bicyle-Demand-Forecasting/Data/processed/seoul/Contextual Data/weather"
     )
