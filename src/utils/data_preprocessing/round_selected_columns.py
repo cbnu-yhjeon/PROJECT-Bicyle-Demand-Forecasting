@@ -35,13 +35,24 @@ def round_selected_columns(input_csv, output_csv, columns, digits=2):
 
 if __name__ == "__main__":
     round_selected_columns(
-        input_csv=r"/home/avg/PROJECT-Bicyle-Demand-Forecasting/Data/processed/join/merged_with_weather.csv",
-        output_csv=r"/home/avg/PROJECT-Bicyle-Demand-Forecasting/Data/processed/join/merged_with_weather_rounded.csv",
+        input_csv=r"/home/avg/PROJECT-Bicyle-Demand-Forecasting/Data/interim/seoul/bicycle_final_data.csv",
+        output_csv=r"/home/avg/PROJECT-Bicyle-Demand-Forecasting/Data/interim/seoul/bicycle_final_data_rounded.csv",
 
         # 🔥 소수점 두자리 유지할 컬럼 목록
         columns=[
             "used_time(avg)",
             "used_dis(avg)",
+            "n_station_dis(m)",
+            "n_bus_dis(m)",
+            "n_school_dis(m)",
+            "n_park_dis(m)",
+            "temperature",
+            "Precipitation",
+            "windspeed",
+            "humidity",
+            "sunshine",
+            "snowcover",
+            "cloudcover"
         ],
 
 

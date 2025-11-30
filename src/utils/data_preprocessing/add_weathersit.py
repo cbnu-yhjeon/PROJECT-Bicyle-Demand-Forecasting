@@ -69,6 +69,6 @@ def add_weathersit_flag(input_csv, output_csv):
 
 if __name__ == "__main__":
     add_weathersit_flag(
-        input_csv=r"/home/avg/PROJECT-Bicyle-Demand-Forecasting/Data/processed/seoul/Contextual Data/weather/merged_with_time_features.csv",
-        output_csv=r"/home/avg/PROJECT-Bicyle-Demand-Forecasting/Data/processed/seoul/Contextual Data/weather/merged_with_time_features_weathersit.csv",
+        input_csv=r"/home/avg/PROJECT-Bicyle-Demand-Forecasting/Data/interim/seoul/bicycle_final_data_rounded.csv",
+        output_csv=r"/home/avg/PROJECT-Bicyle-Demand-Forecasting/Data/interim/seoul/bicycle_final_data_rounded_add_weather_sit.csv",
     )
