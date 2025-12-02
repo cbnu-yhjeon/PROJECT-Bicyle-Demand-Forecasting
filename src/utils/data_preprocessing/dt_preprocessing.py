@@ -46,7 +46,7 @@ def add_time_features(input_csv, output_csv, datetime_col="datatime"):
 
 if __name__ == "__main__":
     add_time_features(
-        input_csv="/home/avg/PROJECT-Bicyle-Demand-Forecasting/Data/processed/seoul/Contextual Data/weather/merged_rename.csv",
-        output_csv="/home/avg/PROJECT-Bicyle-Demand-Forecasting/Data/processed/seoul/Contextual Data/weather/merged_with_time_features.csv",
-        datetime_col="dt"
+        input_csv="/home/avg/PROJECT-Bicyle-Demand-Forecasting/Data/interim/washington/dc_weather_2021_2025_hourly.csv",
+        output_csv="/home/avg/PROJECT-Bicyle-Demand-Forecasting/Data/interim/washington/dc_weather_2021_2025_hourly_with_time_features.csv",
+        datetime_col="time"
     )
