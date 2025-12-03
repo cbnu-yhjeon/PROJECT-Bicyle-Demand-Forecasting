@@ -1,0 +1,153 @@
+[Bike Demand ML 프로젝트 - WSL GPU 환경 구성 가이드]
+
+1. 전체 개요
+- 목적: WSL2(우분투) 환경에서 GPU를 활용해 XGBoost / LightGBM / RandomForest 모델 학습
+- 구성 순서:
+  1) Windows에서 WSL2 + NVIDIA 드라이버 설정
+  2) WSL(우분투)에서 GPU 인식 확인
+  3) Conda 기반 Python 환경 생성
+  4) 필수 패키지 설치
+  5) (옵션) LightGBM GPU 빌드
+  6) XGBoost / LightGBM에서 GPU 사용 설정
+
+--------------------------------------------------
+2. Windows 측 설정
+
+2-1) WSL2 설치 및 Ubuntu 배포판 준비
+- 관리자 PowerShell 실행 후:
+
+  wsl --install -d Ubuntu-22.04
+
+- 설치가 끝나면 재부팅 후 Ubuntu 터미널을 실행하여 초기 설정(계정 생성 등) 진행.
+
+2-2) NVIDIA GPU 드라이버 설치 (WSL 지원)
+- NVIDIA 공식 사이트에서 GeForce / RTX / Studio 드라이버 중
+  "WSL2 + CUDA 사용 가능" 버전 설치.
+- 설치 후 Windows를 재부팅.
+
+2-3) Windows에서 GPU 확인
+- CMD 또는 PowerShell에서:
+
+  nvidia-smi
+
+- GPU 정보(모델명, 드라이버 버전, CUDA 버전)가 정상적으로 출력되는지 확인.
+
+--------------------------------------------------
+3. WSL(우분투) 내부 설정
+
+3-1) GPU 인식 확인
+- WSL(Ubuntu) 터미널에서:
+
+  nvidia-smi
+
+- Windows와 동일하게 GPU 정보가 출력되면 WSL에서 GPU를 인식한 것.
+
+--------------------------------------------------
+4. Conda 환경 생성 및 기본 패키지 설치
+
+4-1) (선택) Miniconda / Anaconda 설치
+- WSL에서 Miniconda 설치 스크립트를 받아서 설치하거나,
+  이미 설치되어 있다면 생략.
+
+4-2) 프로젝트용 Conda 환경 생성
+- WSL 터미널에서:
+
+  conda create -n bike_ml python=3.11 -y
+  conda activate bike_ml
+
+4-3) 필수 파이썬 패키지 설치
+- 데이터 처리 및 모델 학습용:
+
+  conda install -c conda-forge numpy pandas scikit-learn matplotlib -y
+
+- Gradient Boosting 계열:
+
+  pip install xgboost lightgbm optuna
+
+* 참고
+- scikit-learn: 데이터 전처리, train/val/test split, RMSE/MAE/R2 계산 등에 사용
+- xgboost / lightgbm: 단일 모델(XGBoost, LightGBM) 학습에 사용
+- optuna: 이후 자동 하이퍼 파라미터 튜닝 시 사용 가능 (선택 사항)
+
+--------------------------------------------------
+5. (필요 시) LightGBM GPU 빌드
+
+※ 기본 pip 설치 LightGBM도 CPU로는 충분히 사용 가능함.
+※ 정말 GPU로 LightGBM을 써야 할 때만 아래 절차 수행.
+
+5-1) GPU 빌드를 위한 의존성 설치
+
+  sudo apt-get update
+  sudo apt-get install -y \
+    git cmake build-essential libboost-dev libboost-system-dev \
+    libboost-filesystem-dev libboost-chrono-dev libboost-thread-dev \
+    libboost-regex-dev \
+    ocl-icd-opencl-dev libopencl1
+
+5-2) LightGBM 소스 코드 클론 및 빌드
+
+  git clone --recursive https://github.com/microsoft/LightGBM.git
+  cd LightGBM
+
+  mkdir build && cd build
+  cmake -DUSE_GPU=1 ..
+  make -j$(nproc)
+
+5-3) 파이썬 패키지 설치
+
+  cd ../python-package
+  pip install .
+
+5-4) 파이썬에서 GPU 모드 사용 예시
+
+  from lightgbm import LGBMRegressor
+
+  model = LGBMRegressor(
+      objective="regression",
+      device_type="gpu",  # 혹은 device='gpu'
+      gpu_platform_id=0,
+      gpu_device_id=0,
+  )
+
+--------------------------------------------------
+6. XGBoost에서 GPU 사용 설정
+
+6-1) 기본 조건
+- WSL에서 `nvidia-smi`가 정상 동작하고,
+- pip로 설치한 xgboost가 CUDA를 인식할 수 있으면 추가 설정 없이 GPU 사용 가능.
+
+6-2) 파이썬 코드 예시
+
+  from xgboost import XGBRegressor
+
+  model = XGBRegressor(
+      objective="reg:squarederror",
+      random_state=42,
+      tree_method="gpu_hist",  # ← GPU 사용 옵션
+  )
+
+- 기존 코드에서 tree_method만 "gpu_hist"로 바꾸면 GPU를 활용해 학습.
+
+--------------------------------------------------
+7. 프로젝트 실행 흐름 정리
+
+1) Windows에서
+   - WSL2 설치
+   - NVIDIA 드라이버 설치 및 nvidia-smi 확인
+
+2) WSL(Ubuntu)에서
+   - nvidia-smi로 GPU 인식 확인
+   - conda create -n bike_ml python=3.11
+   - conda activate bike_ml
+   - conda/pip으로 numpy, pandas, scikit-learn, xgboost, lightgbm 설치
+
+3) (선택) LightGBM GPU 빌드
+   - git clone LightGBM
+   - USE_GPU=1 옵션으로 빌드 후 pip install .
+
+4) 모델 학습 코드에서
+   - XGBoost: tree_method="gpu_hist"
+   - LightGBM: device_type="gpu" (또는 device='gpu') 로 설정
+
+이 가이드를 기준으로 WSL + GPU 환경을 먼저 안정적으로 세팅한 뒤,
+자전거 수요 예측(XGBoost / LightGBM / RandomForest) 모델링 코드를 실행하면 됨.
