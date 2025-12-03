@@ -1,0 +1,166 @@
+자전거 수요 예측 머신러닝 TODO
+🚲 자전거 수요 예측 머신러닝 프로젝트
+✅ 업무 리스트 (역할 구분 없이 전체 To-Do)
+
+데이터 수집 → 전처리 → EDA → 모델링 → 앙상블 → 해석 → 결과 보고
+전체 파이프라인 기준으로 깔끔하게 정리했어.
+
+1) 📥 데이터 수집(Data Collection)
+■ 원본 데이터 확보
+
+UCI Bike Sharing Dataset 다운로드
+
+서울시 따릉이 대여/반납 시간대별 데이터 수집
+
+POI 데이터(지하철/버스/학교/공원/상권 등) 수집
+
+기상청/NOAA/Open-Meteo API 통한 날씨 수집
+
+온도 / 풍속 / 습도 / 강수 / 적설
+
+시정, 일조시간/일사량(가능한 API 탐색)
+
+워싱턴 DC 날씨(NCEI API) 실패 케이스 해결
+
+■ 수집 자동화 스크립트 작성
+
+/src/data/weather_api.py
+
+/src/data/loader.py
+
+2) 🧹 데이터 전처리(Data Preprocessing)
+■ 스키마 통일
+
+날짜 형식 통합 (YYYY-MM-DD HH:MM)
+
+대여소 ID/명칭 정규화
+
+UCI ↔ 서울시 ↔ 워싱턴 데이터 스키마 일원화
+
+날씨와 대여량 merge
+
+■ 결측치/Null 처리
+
+“시간대 평균이 1개라서 평균 불가 → null 발생” 예외 처리
+
+날씨 데이터 시계열 보간(interpolation)
+
+■ 파생 변수 생성
+
+quarter of day (0~3)
+
+weekend flag
+
+holiday flag
+
+POI 거리/개수 기반 변수 생성
+
+■ 파일 생성
+
+intermediate CSV
+
+final analysis CSV
+
+3) 🔍 탐색적 데이터 분석(EDA)
+■ EDA 문서 작성
+
+전체 EDA Markdown 문서
+
+EDA plot 스크립트 (src/visualization/eda_plots.py)
+
+■ 주요 분석 항목
+
+시간대별 수요 패턴
+
+요일/주말/월별 특징
+
+날씨 변수 vs 수요 상관 분석
+
+POI 영향 분석
+
+이상치 탐지 및 제거
+
+4) 🛠 Feature Engineering
+
+시계열 라그 변수 생성(전날, 전주 같은 시간대 등)
+
+Rolling window 평균
+
+날씨 flag(좋음/보통/나쁨 → weathersit) 생성
+
+원-핫 인코딩 / 스케일링 처리
+
+피처 중요도 기반 불필요 변수 정리
+
+5) 🤖 모델링(Model Training)
+■ 단일 모델 3종 구성
+
+XGBoost
+
+LightGBM
+
+RandomForest
+(각자 학습, 하이퍼파라미터 튜닝)
+
+■ 입력 피처 구성 기준
+
+시간대 기반
+
+POI 기반
+
+날씨 기반
+
+모든 모델의 공통 타깃 = 시간대별 대여량
+
+6) 🔗 앙상블 Ensemble 구성
+■ 앙상블 방식
+
+Soft voting
+
+Hard voting
+
+Stacking Model (메타 모델: LightGBM 제안)
+
+■ 의문 해결
+
+“데이터 기반 모델 3개 필요 vs 통합 피처 1개 모델”
+→ 실험을 통해 두 전략 비교
+
+7) 🧠 모델 해석(Explainability)
+
+SHAP 분석
+
+전체 feature importance
+
+weather 영향
+
+POI 영향
+
+Partial dependence plots
+
+모델 비교 보고서 작성
+
+8) 📄 결과 보고 및 문서화
+■ 문서
+
+README.md
+
+프로젝트 구조 설명 문서
+
+데이터 수집/전처리 문서
+
+EDA 문서
+
+모델 & SHAP 결과 문서
+
+■ 발표 자료(PPT)
+
+데이터 소개
+
+모델링 전략
+
+앙상블 구조
+
+SHAP 해석
+
+결론 및 기대 효과

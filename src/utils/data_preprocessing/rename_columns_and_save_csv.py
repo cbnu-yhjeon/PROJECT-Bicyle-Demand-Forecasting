@@ -2,8 +2,8 @@ import pandas as pd
 from pathlib import Path
 
 # CSV 파일 읽기 (Linux 경로 형식 사용)
-input_file = '/home/avg/PROJECT-Bicyle-Demand-Forecasting/Data/processed/seoul/Contextual Data/weather/merged.csv'
-output_file = '/home/avg/PROJECT-Bicyle-Demand-Forecasting/Data/processed/seoul/Contextual Data/weather/merged_rename.csv'
+input_file = '/home/avg/PROJECT-Bicyle-Demand-Forecasting/Data/interim/seoul/bicycle_final_data.csv'
+output_file = '/home/avg/PROJECT-Bicyle-Demand-Forecasting/Data/interim/seoul/seoul_rental_data.csv'
 
 # Path 객체로 변환하여 운영체제에 관계없이 안전하게 처리
 input_path = Path(input_file)
@@ -24,16 +24,7 @@ print(df.columns.tolist())
 # 칼럼명 변경
 # 방법 1: 딕셔너리로 특정 칼럼만 변경
 column_mapping = {
-    '지점': 'Rentor_ID',
-    '지점명': 'Rentor_NM',
-    '일시': 'dt',
-    '기온(°C)': 'temperature',
-    '강수량(mm)': 'Precipitation',
-    '풍속(m/s)': 'windspeed',
-    '습도(%)': 'humidity',
-    '일조(hr)': 'sunshine',
-    '적설(cm)': 'snowcover',
-    '전운량(10분위)': 'cloudcover',
+    '거치대수': 'Holding quantity',
 }
 
 df.rename(columns=column_mapping, inplace=True)
