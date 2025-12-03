@@ -161,3 +161,25 @@ https://data.seoul.go.kr/dataList/OA-15245/ (데이터 기간: 2020\~2025.06)
 
 출처: 기상자료개방포털(기상청), ASOS 관측자료(2020\~2025.06),
 https://data.kma.go.kr/data/grnd/selectAsosRltmList.do
+
+------------------------------------------------------------------------
+
+# 6. Open-Meteo API (워싱턴 DC 날씨 데이터)
+
+## ✔ 출처
+- 공식 사이트: https://open-meteo.com/
+- 데이터 API 문서: https://open-meteo.com/en/docs
+
+## ✔ 라이선스
+- **CC BY 4.0 (Creative Commons Attribution 4.0 International)**
+- 출처 표기 필수
+- 비상업적/상업적 목적 모두 무료 사용 가능
+
+## ✔ 주요 제공 데이터
+- 온도, 풍속, 습도, 구름량 등 기상 변수
+- 시계열 기반 초단기/중기 예보 및 과거 재분석 데이터
+
+## ✔ 사용 시 주의사항
+- Attribution 반드시 포함: “Weather data provided by Open-Meteo.com”
+- API 사용량 제한은 없으나, 서버 부하 방지를 위한 요청 간격 준수 권장
+

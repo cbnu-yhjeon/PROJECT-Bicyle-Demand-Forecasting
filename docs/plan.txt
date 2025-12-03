@@ -96,18 +96,12 @@ Rolling window 평균
 ■ 단일 모델 3종 구성
 
 XGBoost
-
 LightGBM
-
 RandomForest
 (각자 학습, 하이퍼파라미터 튜닝)
-
 ■ 입력 피처 구성 기준
-
 시간대 기반
-
 POI 기반
-
 날씨 기반
 
 모든 모델의 공통 타깃 = 시간대별 대여량
@@ -116,9 +110,7 @@ POI 기반
 ■ 앙상블 방식
 
 Soft voting
-
 Hard voting
-
 Stacking Model (메타 모델: LightGBM 제안)
 
 ■ 의문 해결
@@ -129,38 +121,23 @@ Stacking Model (메타 모델: LightGBM 제안)
 7) 🧠 모델 해석(Explainability)
 
 SHAP 분석
-
 전체 feature importance
-
 weather 영향
-
 POI 영향
-
 Partial dependence plots
-
 모델 비교 보고서 작성
 
 8) 📄 결과 보고 및 문서화
 ■ 문서
-
 README.md
-
 프로젝트 구조 설명 문서
-
 데이터 수집/전처리 문서
-
 EDA 문서
-
 모델 & SHAP 결과 문서
-
 ■ 발표 자료(PPT)
-
 데이터 소개
-
 모델링 전략
-
 앙상블 구조
-
 SHAP 해석
 
 결론 및 기대 효과
