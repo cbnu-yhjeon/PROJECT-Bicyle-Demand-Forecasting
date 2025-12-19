@@ -59,7 +59,7 @@ Project-Bicycle-Demand-Forecasting/
 ## 📌 데이터 관리 정책 (Google Drive 기반)
 
 📂 **Google Drive 링크**  
-https://drive.google.com/drive/u/1/home
+[https://drive.google.com/drive/u/1/home](https://drive.google.com/file/d/1gKQdjjNxbO0t2VrAFyPLnAqdSGpvotVg/view?usp=drive_link)
 
 ### ✔ 핵심 원칙
 
